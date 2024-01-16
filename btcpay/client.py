@@ -85,12 +85,12 @@ class BTCPayClient:
         return r.json()['data']
 
     def get_rates(self, crypto='BTC', store_id=None):
+        if store_id is None:
+            raise ValueError("store_id is required")
         params = dict(
             cryptoCode=crypto
         )
-        if store_id:
-            params['storeID'] = store_id
-        return self._signed_get_request('/rates/', params=params)
+        return self._signed_get_request(f'/api/v1/stores/{store_id}/rates', params=params)
 
     def get_rate(self, currency, crypto='BTC', store_id=None):
         rates = self.get_rates(crypto=crypto, store_id=store_id)
